@@ -11,7 +11,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class Robot {
         private int x = -1;
         private int y = -1;
-        private int cDirection;
+        private CardinalPoint cardinalPoint;
 
 
         public boolean placedOnBoard() { return getX() >= 0 && getY() >=0; }
@@ -19,8 +19,8 @@ public class Robot {
         public int getX() {return x; }
 
         public int getY() { return y; }
-        
-        public CardinalPoint cardinalPoint(){ return CardinalPoint.cardinalPointForInt(cDirection); }
+
+        public CardinalPoint cardinalPoint(){ return cardinalPoint; }
 
 
         public Point nextMoveCoordinates(){
@@ -47,10 +47,8 @@ public class Robot {
 
         public void rotate(RotationDirection rotationDirection) {
             checkNotNull(rotationDirection, "Rotation Direction must not be null");
+            cardinalPoint = CardinalPoint.cardinalPointForRotation(cardinalPoint(), rotationDirection);
 
-            CardinalPoint cPoint = cardinalPoint();
-            CardinalPoint newDirection = CardinalPoint.cardinalPointForRotation(cPoint, rotationDirection);
-            cDirection = newDirection.getValue();
 
         }
 
@@ -68,6 +66,6 @@ public class Robot {
 
             this.x = x;
             this.y = y;
-            this.cDirection = cp.getValue();
+            this.cardinalPoint = cp;
         }
     }

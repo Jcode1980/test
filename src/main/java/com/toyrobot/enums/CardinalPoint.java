@@ -4,18 +4,14 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum CardinalPoint {
-    NORTH(1),EAST(2),SOUTH(3),WEST(4);
+    NORTH,EAST,SOUTH,WEST;
 
     public static List<CardinalPoint> cardinalPoints = Arrays.asList(NORTH, EAST, SOUTH, WEST);
 
-    CardinalPoint(int value){this.value = value; }
-
-    private int value;
-
-    public int getValue(){return value;}
-
-
     public static CardinalPoint cardinalPointForRotation(CardinalPoint currentDirection, RotationDirection rotationDirection){
+        if(currentDirection == null){throw new NullPointerException("currentDirection must not be null");}
+        if(rotationDirection == null){throw new NullPointerException("rotationDirection parameter must not be null");}
+
         int indexOf = cardinalPoints.indexOf(currentDirection);
         int indexOfNextDirection = 0;
 
@@ -26,13 +22,5 @@ public enum CardinalPoint {
         return cardinalPoints.get(indexOfNextDirection);
     }
 
-    public static CardinalPoint cardinalPointForInt(int value){
-        return cardinalPoints.stream().filter(currentDirection -> currentDirection.value == value).findFirst().orElseThrow(() ->
-                new IllegalArgumentException("Cardinal Point with value: " + value + " not found"));
-    }
-
-    public static CardinalPoint cardinalDirectionForString(String value){
-        return cardinalPoints.stream().filter(currentDirection -> currentDirection.name().equalsIgnoreCase(value)).findFirst().orElseThrow(() ->
-                new IllegalArgumentException("Cardinal Point with name: " + value + " not found"));
-    }
 }
+
