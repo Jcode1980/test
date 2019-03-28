@@ -22,5 +22,11 @@ public enum CardinalPoint {
         return cardinalPoints.get(indexOfNextDirection);
     }
 
+    public static CardinalPoint  cardinalPointForDirection(String direction){
+        return cardinalPoints.stream().filter(cardinalPoint -> cardinalPoint.name()
+                .equalsIgnoreCase(direction)).findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Cardinal Point with name: " + direction + " not found"));
+    }
+
 }
 

@@ -9,19 +9,16 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class Robot {
-        private int x = -1;
-        private int y = -1;
+        private Point point;
         private CardinalPoint cardinalPoint;
-
 
         public boolean placedOnBoard() { return getX() >= 0 && getY() >=0; }
 
-        public int getX() {return x; }
+        public int getX() {return (int)point.getX(); }
 
-        public int getY() { return y; }
+        public int getY() {return (int)point.getY(); }
 
         public CardinalPoint cardinalPoint(){ return cardinalPoint; }
-
 
         public Point nextMoveCoordinates(){
             CardinalPoint direction = cardinalPoint();
@@ -48,24 +45,19 @@ public class Robot {
         public void rotate(RotationDirection rotationDirection) {
             checkNotNull(rotationDirection, "Rotation Direction must not be null");
             cardinalPoint = CardinalPoint.cardinalPointForRotation(cardinalPoint(), rotationDirection);
-
-
         }
 
-        public void move(int x , int y ){
-            checkArgument(x >= 0, "x coordinate must be a positive non zero integer: %s", x);
-            checkArgument(y >= 0, "y coordinate must be a positive non zero integer: %s", y);
-            this.x = x;
-            this.y = y;
+        public void move(){
+            this.point = nextMoveCoordinates();
         }
 
-        public void place(int x, int y, CardinalPoint cp){
-            checkArgument(x >= 0, "x coordinate must be a positive non zero integer: %s", x);
-            checkArgument(y >= 0, "y coordinate must be a positive non zero integer: %s", y);
-            checkNotNull(cp, "cp Cardinal Poinst must not be null");
+        public void place(Point point, CardinalPoint cp){
+            checkNotNull(point, "point must not be null");
+            checkNotNull(cp, "cp Cardinal Points must not be null");
+            checkArgument(point.getX() >= 0, "x coordinate must be a positive non zero integer: %s", point.getX());
+            checkArgument(point.getY() >= 0, "y coordinate must be a positive non zero integer: %s", point.getY());
 
-            this.x = x;
-            this.y = y;
+            this.point = point;
             this.cardinalPoint = cp;
         }
     }

@@ -3,22 +3,24 @@ package com.toyrobot.service;
 import com.toyrobot.model.Simulation;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 public interface RobotService {
     /**
-     * @param filePath <code>String</code> representation of the site map
-     * @return <code>IExcavationJob</code> the job
+     * @param width <code>String</code> width of the board to be created
+     * @param height <code>String</code> height of the board to be created
+     * @return <code>Simulation</code> simulation the holds the board and robot
      * @throws IOException
      */
-    Simulation createSimulation(String filePath) throws IOException;
+    Simulation createSimulation(Integer width, Integer height) throws IOException;
 
 
     /**
      * Processes the command for the given <code>IExcavationJob</code>
      *
-     * @param command The command to be applied to the job
-     * @param simulation the simulation
+     * @param command The command to be run
+     * @param simulation the simulation that will run the coommand
      * @return <code>boolean</code>
      */
     boolean processCommandForJob(String command, Simulation simulation);

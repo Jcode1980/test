@@ -6,6 +6,7 @@ import com.toyrobot.service.RobotServiceImpl;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.nio.file.Paths;
 
 public class Application {
@@ -22,7 +23,6 @@ public class Application {
             String mapsFile = args.length > 0 ? args[0] : Paths.get(DEMO_SITE_MAP).toString();
 
             InputStream instructionsStream = args.length > 1 ? new FileInputStream(new File(args[1])) : System.in;
-
             Client client = new Client(mapsFile, instructionsStream, new RobotServiceImpl());
         }catch (Exception e){
             e.printStackTrace();
