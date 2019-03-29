@@ -20,10 +20,9 @@ public class Application {
     static private void initializeClient(String[] args){
         try{
 
-            String mapsFile = args.length > 0 ? args[0] : Paths.get(DEMO_SITE_MAP).toString();
-
             InputStream instructionsStream = args.length > 1 ? new FileInputStream(new File(args[1])) : System.in;
-            Client client = new Client(mapsFile, instructionsStream, new RobotServiceImpl());
+            Client client = new Client(new RobotServiceImpl(), instructionsStream);
+            client.startSimulation();
         }catch (Exception e){
             e.printStackTrace();
         }

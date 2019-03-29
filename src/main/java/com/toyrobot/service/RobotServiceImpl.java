@@ -9,19 +9,15 @@ import com.toyrobot.model.Simulation;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.List;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 public class RobotServiceImpl implements RobotService{
     private static final Logger log = Logger.getLogger(RobotServiceImpl.class);
     private static final String COMMA = ",";
     private static final String SPACE = " ";
+    private static final List<ActionType> actionTypes = ActionType.actionTypes();
 
-    private OutputStream outputStream;
 
     @Override
     public Simulation createSimulation(Integer width, Integer height) {
@@ -30,17 +26,25 @@ public class RobotServiceImpl implements RobotService{
 
     @Override
     public boolean processCommandForJob(String command, Simulation simulation) {
-        if(simulation == null){throw new NullPointerException("simulation must not be null");}
-        if(command == null){throw new NullPointerException("command parameter must not be null");}
+        if (simulation == null) {
+            throw new NullPointerException("simulation must not be null");
+        }
+        if (command == null) {
+            throw new NullPointerException("command parameter must not be null");
+        }
 
-        boolean continueJob = true;
 
+        System.out.println("this incoming command: " + command);
 
-            List<ActionType> actionTypes = ActionType.actionTypes();
-            ActionType actionType =  actionTypes.stream().filter(
-                    currentAction -> command.matches(currentAction.pattern())).findFirst()
-                    .orElseThrow(()-> new IllegalArgumentException("Incorrect command passed in " + command));
+        ActionType actionType = actionTypes.stream().filter(
+                currentActionType -> command.matches(currentActionType.pattern())).findFirst().orElse(null);
 
+        if (actionType == null) {
+            log.error("unkown command :" + command);
+            return false;
+        }
+
+        try{
             switch (actionType) {
                 case PLACE:
                     placeAction(command, simulation);
@@ -52,16 +56,18 @@ public class RobotServiceImpl implements RobotService{
                     simulation.robot().rotate(RotationDirection.RIGHT);
                     break;
                 case MOVE:
-                    simulation.robot().move();
+                    simulation.moveRobot();
                     break;
                 case REPORT:
                     simulation.report();
                     break;
 
             }
+        }catch (NullPointerException e){
+            log.error(e.getMessage());
+        }
 
-
-        return continueJob;
+        return true;
     }
 
     private void placeAction(String command, Simulation simulation) {
@@ -70,6 +76,7 @@ public class RobotServiceImpl implements RobotService{
         Integer x = Integer.valueOf(commandList.get(0).trim());
         Integer y = Integer.valueOf(commandList.get(1).trim());
         String cDirection = commandList.get(2);
+
         CardinalPoint cardinalPoint = CardinalPoint.cardinalPointForDirection(cDirection);
         simulation.placeRobot(new Point(x,y), cardinalPoint);
     }

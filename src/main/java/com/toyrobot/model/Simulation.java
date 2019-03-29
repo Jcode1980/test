@@ -3,9 +3,6 @@ import com.toyrobot.enums.CardinalPoint;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.io.Writer;
 import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -38,12 +35,13 @@ public class Simulation {
             robot().place(point, cp);
             return true;
         } else {
+            log.info("Invalid coordinates. Robot not placed on board: x: " + point.getX() + " y: " + point.getY());
             return false;
         }
     }
 
-    public void report() {
-        return Optional.of(robot().getX() + COMMA + robot().getY() + COMMA + robot().cardinalPoint().name()));
+    public void report(){
+        log.info(robot().getX() + COMMA + robot().getY() + COMMA + robot().cardinalPoint().name());
     }
 
     public boolean pointIsValid(Point point) {
@@ -53,6 +51,27 @@ public class Simulation {
 
     private boolean coordinatesAreWithinBoundary(int x, int y) {
         return x >= 0 && y >= 0 && gridBoard.getWidth() >= x && gridBoard.getHeight() >= y;
+    }
+
+    public boolean moveRobot(){
+        boolean successfull;
+
+        if(!robot().hasBeenPlaced()){
+            log.error("Robot has not yet been placed");
+            successfull = false;
+        }else if(!pointIsValid(robot().nextMoveCoordinates())){
+            log.error("Next move is not valid: " + robot().nextMoveCoordinates());
+            successfull = false;
+        }
+        else{
+            robot().move();
+            successfull = true;
+        }
+
+        return successfull;
+
+
+
     }
 
 }

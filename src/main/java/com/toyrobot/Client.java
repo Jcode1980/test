@@ -14,23 +14,23 @@ public class Client {
     private InputStream commandsStream;
     private OutputStream outputStream;
 
-    public Client(RobotService robotService, InputStream commandsStream, OutputStream outputStream) throws IOException{
+    public Client(RobotService robotService, InputStream commandsStream) throws IOException{
         this.robotService = robotService;
-        simulation  = robotService.createSimulation(4,4, outputStream);
+        simulation  = robotService.createSimulation(4,4);
         this.commandsStream = commandsStream;
         this.outputStream = outputStream;
     }
 
-    private void wellcomPhase(){
+    public void startSimulation(){
 
         Scanner scanner = new Scanner(commandsStream);
         String commandStr;
 
-        boolean continueProgram = true;
-        while (continueProgram) {
-            System.out.print("(l)eft, (r)ight, (a)dvance <n>, (q)uit: ");
+
+        while (true) {
+            System.out.print("(l)eft, (r)ight, (m)ove, (p)lace x y f: ");
             commandStr = scanner.nextLine();
-            continueProgram = robotService.processCommandForJob(commandStr, simulation);
+            robotService.processCommandForJob(commandStr, simulation);
         }
     }
 
