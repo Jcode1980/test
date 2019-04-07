@@ -50,7 +50,7 @@ public class Simulation {
     }
 
     private boolean coordinatesAreWithinBoundary(int x, int y) {
-        return x >= 0 && y >= 0 && gridBoard.getWidth() >= x && gridBoard.getHeight() >= y;
+        return x >= 0 && y >= 0 && gridBoard.getWidth() > x && gridBoard.getHeight() > y;
     }
 
     public boolean moveRobot(){
