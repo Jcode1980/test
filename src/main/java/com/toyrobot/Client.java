@@ -2,6 +2,7 @@ package com.toyrobot;
 
 import com.toyrobot.model.Simulation;
 import com.toyrobot.service.RobotService;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,6 +10,7 @@ import java.io.OutputStream;
 import java.util.Scanner;
 
 public class Client {
+    private static final Logger log = Logger.getLogger(Client.class);
     private RobotService robotService;
     private Simulation simulation;
     private InputStream commandsStream;
@@ -28,7 +30,7 @@ public class Client {
 
 
         while (true) {
-            System.out.print("(l)eft, (r)ight, (m)ove, (p)lace x y f: ");
+            log.info("(l)eft, (r)ight, (m)ove, (p)lace x y f: ");
             commandStr = scanner.nextLine();
             robotService.processCommandForJob(commandStr, simulation);
         }
