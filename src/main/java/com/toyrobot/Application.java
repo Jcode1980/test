@@ -3,8 +3,8 @@ import com.toyrobot.service.RobotServiceImpl;
 import java.io.*;
 
 public class Application {
-    private static final Integer DEFAULT_MAP_HEIGHT = 4;
-    private static final Integer DEFAULT_MAP_WIDTH = 4;
+    private static final Integer DEFAULT_MAP_HEIGHT = 5;
+    private static final Integer DEFAULT_MAP_WIDTH = 5;
 
     static public void main(String[] args) throws IOException {
         initializeClient(args);

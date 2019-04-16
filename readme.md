@@ -66,7 +66,10 @@ Assumptions
     -Commands are read line by line
     -Any commands before a place command will be ignored.
     -Non valid incorrectly formatted commands will print an error message to log.error
+    -As mentioned in the problem briefing, the  tabletop of dimensions 5 units x 5 units,
+    however i've allowed the ability to create a tabletop with any dimension.
     
+   
 
     
     
