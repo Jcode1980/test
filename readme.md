@@ -27,8 +27,8 @@ There are some sample command files that can be run as listed below:
     - Click on ToyRobot project within Intellij -> "Run All Tests"
 
     *Running Toy Robot and using standard input*
-    - Right click on src/main/java/com/toyrobot/App.java
-    - Click on "Run 'App.main()'
+    - Right click on src/main/java/com/toyrobot/Application.java
+    - Click on "Run 'Application.main()'
 
     *Running main App using custom filePaths*
     -Select ToyRobot project folder
@@ -37,18 +37,21 @@ There are some sample command files that can be run as listed below:
     -Select Application.java for the main class for the new Application Configuration
     -Under "Program Arguments" type in [InputCSV_FilePath] 
     -Hit "Apply"
-    -Right click on src/main/java/com/toyrobot/App.java
+    -Right click on src/main/java/com/toyrobot/Application.java
     -Click Run on your newly created Run Application Configuration
 
 
 
-**Terminal Command Line **
+**Terminal Command Line**
+
    *Running main App using default input commands File*
+   
        mvn exec:java -Dexec.mainClass="com.toyrobot.Application"
 
    *Running main App using custom input commands File*
-       mvn exec:java -Dexec.mainClass="com.toyrobot.App -Dexec.args=[FILEPATH]
-        e.g. exec:java -Dexec.mainClass="com.toyrobot.App" -Dexec.args="ToyRobotV2/src/main/resources/exampleCommandFiles/TestInstructionsBoundariesFile.txt"
+   
+       mvn exec:java -Dexec.mainClass="com.toyrobot.Application -Dexec.args=[FILEPATH]
+        e.g. exec:java -Dexec.mainClass="com.toyrobot.Application" -Dexec.args="ToyRobotV2/src/main/resources/exampleCommandFiles/TestInstructionsBoundariesFile.txt"
     
     
 Assumptions
