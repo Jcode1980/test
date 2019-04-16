@@ -3,8 +3,6 @@ import com.toyrobot.enums.CardinalPoint;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
-import java.util.Optional;
-
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class Simulation {
@@ -40,8 +38,17 @@ public class Simulation {
         }
     }
 
-    public void report(){
-        log.info(robot().getX() + COMMA + robot().getY() + COMMA + robot().cardinalPoint().name());
+    public boolean report(){
+        boolean success = false;
+        if(robot().hasBeenPlaced()){
+            log.info(robot().getX() + COMMA + robot().getY() + COMMA + robot().cardinalPoint().name());
+            success = true;
+        }
+        else{
+            log.error("Robot not yet placed. Please place robot before running report command");
+            success = false;
+        }
+        return success;
     }
 
     public boolean pointIsValid(Point point) {

@@ -7,6 +7,7 @@ import com.toyrobot.model.GridBoard;
 import com.toyrobot.model.Robot;
 import com.toyrobot.model.Simulation;
 import org.apache.log4j.Logger;
+import org.mockito.internal.matchers.Null;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -26,15 +27,8 @@ public class RobotServiceImpl implements RobotService{
 
     @Override
     public boolean processCommandForJob(String command, Simulation simulation) {
-        if (simulation == null) {
-            throw new NullPointerException("simulation must not be null");
-        }
-        if (command == null) {
-            throw new NullPointerException("command parameter must not be null");
-        }
-
-
-        System.out.println("this incoming command: " + command);
+        if (simulation == null) { throw new NullPointerException("simulation must not be null"); }
+        if (command == null) { throw new NullPointerException("command parameter must not be null"); }
 
         ActionType actionType = actionTypes.stream().filter(
                 currentActionType -> command.matches(currentActionType.pattern())).findFirst().orElse(null);
@@ -44,33 +38,29 @@ public class RobotServiceImpl implements RobotService{
             return false;
         }
 
-        try{
-            switch (actionType) {
-                case PLACE:
-                    placeAction(command, simulation);
-                    break;
-                case LEFT:
-                    simulation.robot().rotate(RotationDirection.LEFT);
-                    break;
-                case RIGHT:
-                    simulation.robot().rotate(RotationDirection.RIGHT);
-                    break;
-                case MOVE:
-                    simulation.moveRobot();
-                    break;
-                case REPORT:
-                    simulation.report();
-                    break;
+        boolean successfullyProcessed = true;
 
-            }
-        }catch (NullPointerException e){
-            log.error(e.getMessage());
+        switch (actionType) {
+            case PLACE:
+                successfullyProcessed = placeAction(command, simulation);
+                break;
+            case LEFT:
+                successfullyProcessed = simulation.robot().rotate(RotationDirection.LEFT);
+                break;
+            case RIGHT:
+                successfullyProcessed = simulation.robot().rotate(RotationDirection.RIGHT);
+                break;
+            case MOVE:
+                successfullyProcessed = simulation.moveRobot();
+                break;
+            case REPORT:
+                successfullyProcessed = simulation.report();
+                break;
         }
-
-        return true;
+        return successfullyProcessed;
     }
 
-    private void placeAction(String command, Simulation simulation) {
+    private boolean placeAction(String command, Simulation simulation) {
         String parametersString = command.substring(command.indexOf(SPACE), command.length());
         List<String> commandList = Arrays.asList(parametersString.split(COMMA));
         Integer x = Integer.valueOf(commandList.get(0).trim());
@@ -78,7 +68,7 @@ public class RobotServiceImpl implements RobotService{
         String cDirection = commandList.get(2);
 
         CardinalPoint cardinalPoint = CardinalPoint.cardinalPointForDirection(cDirection);
-        simulation.placeRobot(new Point(x,y), cardinalPoint);
+        return simulation.placeRobot(new Point(x,y), cardinalPoint);
     }
 
 

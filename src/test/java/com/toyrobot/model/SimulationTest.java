@@ -1,79 +1,87 @@
 package com.toyrobot.model;
 
 import com.toyrobot.enums.CardinalPoint;
-import com.toyrobot.enums.RotationDirection;
-import org.apache.log4j.Appender;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.apache.log4j.spi.LoggingEvent;
+import org.apache.log4j.*;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.awt.*;
+import java.io.ByteArrayOutputStream;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SimulationTest {
-    private Simulation simulation;
-    private Robot robot;
-    private GridBoard gridBoard;
+    private static final String APPENDER_NAME = "log4jRuleAppender";
+    private static final Layout LAYOUT = new SimpleLayout();
+    private Logger logger;
+    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 
+    private Simulation simulation;
+    @Mock
+    private GridBoard gridBoardMock;
     @Mock
     private Robot robotMock;
 
-    @Mock
-    private Appender mockAppender;
-    @Captor
-    private ArgumentCaptor<LoggingEvent> captorLoggingEvent;
 
     @Before
     public void setUp() throws Exception {
-        this.gridBoard = new GridBoard(4,4);
-        simulation = new Simulation(gridBoard, robotMock);
+        logger = Logger.getRootLogger();
+        Appender appender = new WriterAppender(LAYOUT, outContent);
+        appender.setName(APPENDER_NAME);
+        logger.addAppender(appender);
+
+        simulation = new Simulation(gridBoardMock, robotMock);
+
+        when(robotMock.getX()).thenReturn(2);
+        when(robotMock.getY()).thenReturn(2);
+        when(robotMock.cardinalPoint()).thenReturn(CardinalPoint.NORTH);
+
+        when(gridBoardMock.getWidth()).thenReturn(4);
+        when(gridBoardMock.getHeight()).thenReturn(4);
+    }
+
+    @After
+    public void tearDown() {
+        logger.removeAppender(APPENDER_NAME);
     }
 
     @Test
     public void robot() {
-        assertThat(simulation, is(this.robot));
-
+        assertThat(simulation.robot(), is(this.robotMock));
     }
 
     @Test
     public void gridBoard() {
-        assertThat(gridBoard, is(this.gridBoard));
+        assertThat(simulation.gridBoard(), is(gridBoardMock));
     }
 
     @Test
     public void placeRobot() {
-        simulation.placeRobot(new Point(3, 2), CardinalPoint.NORTH);
-        assertThat(robot.getX(), is(3));
-        assertThat(robot.getY(), is(2));
-        assertThat(robot.cardinalPoint(),is(CardinalPoint.NORTH));
+        Point point = new Point(3, 2);
+        simulation.placeRobot(point, CardinalPoint.NORTH);
+        verify(robotMock).place(point, CardinalPoint.NORTH);
     }
 
-    //fix me ..
+    @Test
+    public void placeRobot_shouldReturnFalseIfGivenInvalidPoint() {
+        Point point = new Point(5, 5);
+        assertFalse(simulation.placeRobot(point, CardinalPoint.NORTH));
+    }
+
     @Test
     public void report() {
-        Logger root =  Logger.getRootLogger();
-        root.addAppender(mockAppender);
-        root.setLevel(Level.INFO);
-        robot.place(new Point(2,2), CardinalPoint.WEST);
-
+        simulation.placeRobot(new Point(2,2), CardinalPoint.NORTH);
         simulation.report();
-
-        LoggingEvent loggingEvent = captorLoggingEvent.getAllValues().get(0);
-        assertThat(loggingEvent.getMessage(), is("2,2,WEST"));
+        assertThat(outContent.toString(), containsString("2,2,NORTH"));
     }
 
     @Test
@@ -86,6 +94,7 @@ public class SimulationTest {
     public void moveRobot(){
         when(robotMock.nextMoveCoordinates()).thenReturn(new Point(3,3));
         when(robotMock.hasBeenPlaced()).thenReturn(true);
+
         assertTrue(simulation.moveRobot());
         verify(robotMock).move();
 
@@ -94,13 +103,16 @@ public class SimulationTest {
     @Test
     public void moveRobot_shouldReturnFalseRobotHasNotYetBeenPlacedOnBoard() {
         when(robotMock.hasBeenPlaced()).thenReturn(false);
-        assertFalse(robotMock.move());
+        assertFalse(simulation.moveRobot());
     }
 
     @Test
     public void moveRobot_shouldReturnFalseWhenNextCoordinateIsNotValid() {
+        when(robotMock.hasBeenPlaced()).thenReturn(true);
         when(robotMock.nextMoveCoordinates()).thenReturn(new Point(-1,0));
-        assertFalse(robotMock.move());
+        assertFalse(simulation.moveRobot());
     }
+
+
 
 }

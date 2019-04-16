@@ -1,30 +1,19 @@
 package com.toyrobot;
-
-import com.toyrobot.service.RobotService;
 import com.toyrobot.service.RobotServiceImpl;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.nio.file.Paths;
+import java.io.*;
 
 public class Application {
-    public static final String DEMO_SITE_MAP = "src/main/resources/SiteMap.txt";
+    private static final Integer DEFAULT_MAP_HEIGHT = 4;
+    private static final Integer DEFAULT_MAP_WIDTH = 4;
 
-    static public void main(String args[]){
+    static public void main(String args[]) throws IOException {
         initializeClient(args);
     }
 
 
-    static private void initializeClient(String[] args){
-        try{
-
-            InputStream instructionsStream = args.length > 1 ? new FileInputStream(new File(args[1])) : System.in;
-            Client client = new Client(new RobotServiceImpl(), instructionsStream);
+    static private void initializeClient(String[] args) throws IOException{
+            InputStream instructionsStream = args.length > 0 ? new FileInputStream(new File(args[0])) : System.in;
+            Client client = new Client(new RobotServiceImpl(), DEFAULT_MAP_HEIGHT, DEFAULT_MAP_WIDTH, instructionsStream);
             client.startSimulation();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
     }
 }

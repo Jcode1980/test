@@ -1,0 +1,8 @@
+place 0,0,East
+move
+move
+move
+move
+move
+move
+report

@@ -3,8 +3,6 @@ package com.toyrobot.service;
 import com.toyrobot.model.Simulation;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.util.ArrayList;
 
 public interface RobotService {
     /**
@@ -13,7 +11,7 @@ public interface RobotService {
      * @return <code>Simulation</code> simulation the holds the board and robot
      * @throws IOException
      */
-    Simulation createSimulation(Integer width, Integer height) throws IOException;
+    Simulation createSimulation(Integer height, Integer width) throws IOException;
 
 
     /**

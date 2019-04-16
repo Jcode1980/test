@@ -52,9 +52,19 @@ public class Robot {
         return new Point(newX, newY);
     }
 
-    public void rotate(RotationDirection rotationDirection) {
+    public boolean rotate(RotationDirection rotationDirection) {
         checkNotNull(rotationDirection, "Rotation Direction must not be null");
-        cardinalPoint = CardinalPoint.cardinalPointForRotation(cardinalPoint(), rotationDirection);
+        boolean successfull = false;
+
+        if(hasBeenPlaced()){
+            cardinalPoint = CardinalPoint.cardinalPointForRotation(cardinalPoint(), rotationDirection);
+            successfull = true;
+        }
+        else{
+            log.error("Please place robot before trying to rotate.");
+        }
+        return successfull;
+
     }
 
     public boolean move() {

@@ -6,7 +6,6 @@ import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Scanner;
 
 public class Client {
@@ -14,13 +13,11 @@ public class Client {
     private RobotService robotService;
     private Simulation simulation;
     private InputStream commandsStream;
-    private OutputStream outputStream;
 
-    public Client(RobotService robotService, InputStream commandsStream) throws IOException{
+    public Client(RobotService robotService, Integer mapHeight, Integer mapWidth,InputStream commandsStream) throws IOException{
         this.robotService = robotService;
-        simulation  = robotService.createSimulation(4,4);
+        simulation  = robotService.createSimulation(mapHeight,mapWidth);
         this.commandsStream = commandsStream;
-        this.outputStream = outputStream;
     }
 
     public void startSimulation(){
@@ -28,9 +25,8 @@ public class Client {
         Scanner scanner = new Scanner(commandsStream);
         String commandStr;
 
-
-        while (true) {
-            log.info("(l)eft, (r)ight, (m)ove, (p)lace x y f: ");
+        log.info("left, right, move, place x,y,f: ");
+        while (scanner.hasNext()) {
             commandStr = scanner.nextLine();
             robotService.processCommandForJob(commandStr, simulation);
         }
