@@ -6,7 +6,7 @@ public class Application {
     private static final Integer DEFAULT_MAP_HEIGHT = 4;
     private static final Integer DEFAULT_MAP_WIDTH = 4;
 
-    static public void main(String args[]) throws IOException {
+    static public void main(String[] args) throws IOException {
         initializeClient(args);
     }
 

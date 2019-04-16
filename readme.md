@@ -1,16 +1,25 @@
 
-Working with ToyRobot in Intellij 2017.3.1
+Working with ToyRobot in Intellij 2019.1
 ==============
 
 prerequisites
 --------------
 The following items should be installed in your system:
 - Maven 3 (http://www.sonatype.com/books/mvnref-book/reference/installation.html)
-- IntelliJ
-- Java 8
+- IntelliJ 2019.1
+- Java 11
 
 Running The Toy Robot Application
 --------------
+If no parameters are given when running the main class, the application will
+run via standard input. 
+
+To run a set of commands within a file, you just need to specify a filepath
+as the first parameter when running the main class.
+There are some sample command files that can be run as listed below:
+- "ToyRobotV2/src/main/resources/exampleCommandFiles/TestInstructionsBoundariesFile.txt"
+- "ToyRobotV2/src/main/resources/exampleCommandFiles/TestInstructionsFile.txt"
+- "ToyRobotV2/src/main/resources/exampleCommandFiles/TestInstructionsFileOutOfBounds.txt"
 
 **Inside Intellij**
 - Open project into Intellij
@@ -41,10 +50,6 @@ Running The Toy Robot Application
        mvn exec:java -Dexec.mainClass="com.toyrobot.App -Dexec.args=[FILEPATH]
         e.g. exec:java -Dexec.mainClass="com.toyrobot.App" -Dexec.args="ToyRobotV2/src/main/resources/exampleCommandFiles/TestInstructionsBoundariesFile.txt"
     
-    **Example command files that can be used for demo or testing **
-    - "ToyRobotV2/src/main/resources/exampleCommandFiles/TestInstructionsBoundariesFile.txt"
-    - "ToyRobotV2/src/main/resources/exampleCommandFiles/TestInstructionsFile.txt"
-    - "ToyRobotV2/src/main/resources/exampleCommandFiles/TestInstructionsFileOutOfBounds.txt"
     
 Assumptions
 =============
@@ -54,26 +59,11 @@ Assumptions
         LEFT
         RIGHT
         REPORT
+    -Commands are not case sensitive
     -Commands are read line by line
     -Any commands before a place command will be ignored.
     -Non valid incorrectly formatted commands will print an error message to log.error
-    -As per the requirement, only one Robot was needed to be on board the at any given time,
-     however the current BoardControllerIMPL class can be redesigned or a new BoardController
-     could be created to hold many placeableItems.
-
-Project Discussions regarding design and future development
-==============
-   **Future Development**
-    -Persistance layer can be developed.
-    -A new Board or the existing board class can be created/modified to hold multiple PlaceableItems.
-    -More commands can be implemented
-    -Give the user ability to specify size of board and number of placeablitems
-    -Have the ability to specify un-occupiable spaces on map
-    -Support for entering commmands via command line input aside from also reading commands from a file. 
     
-   **Design**
-   -Foreign ID of enums are stored in the Robot object and not the actual enums themselves. 
-    This would allow the foreign key to be saved as persistance data
-   -Methods of how to access enums is stored in the enums themselves as it seemed like a logical place
-    to store all related logics.
+
+    
     

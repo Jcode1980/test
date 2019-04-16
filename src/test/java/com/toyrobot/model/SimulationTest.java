@@ -31,9 +31,8 @@ public class SimulationTest {
     @Mock
     private Robot robotMock;
 
-
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         logger = Logger.getRootLogger();
         Appender appender = new WriterAppender(LAYOUT, outContent);
         appender.setName(APPENDER_NAME);
@@ -79,7 +78,8 @@ public class SimulationTest {
 
     @Test
     public void report() {
-        simulation.placeRobot(new Point(2,2), CardinalPoint.NORTH);
+        System.out.println("placed robot:" + simulation.placeRobot(new Point(2,2), CardinalPoint.NORTH));
+        when(robotMock.hasBeenPlaced()).thenReturn(true);
         simulation.report();
         assertThat(outContent.toString(), containsString("2,2,NORTH"));
     }
@@ -97,7 +97,6 @@ public class SimulationTest {
 
         assertTrue(simulation.moveRobot());
         verify(robotMock).move();
-
     }
 
     @Test

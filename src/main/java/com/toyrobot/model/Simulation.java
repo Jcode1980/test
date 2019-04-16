@@ -21,7 +21,6 @@ public class Simulation {
         return robot;
     }
 
-
     public GridBoard gridBoard() {
         return gridBoard;
     }

@@ -7,7 +7,6 @@ import com.toyrobot.model.GridBoard;
 import com.toyrobot.model.Robot;
 import com.toyrobot.model.Simulation;
 import org.apache.log4j.Logger;
-import org.mockito.internal.matchers.Null;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -61,10 +60,10 @@ public class RobotServiceImpl implements RobotService{
     }
 
     private boolean placeAction(String command, Simulation simulation) {
-        String parametersString = command.substring(command.indexOf(SPACE), command.length());
+        String parametersString = command.substring(command.indexOf(SPACE));
         List<String> commandList = Arrays.asList(parametersString.split(COMMA));
-        Integer x = Integer.valueOf(commandList.get(0).trim());
-        Integer y = Integer.valueOf(commandList.get(1).trim());
+        int x = Integer.valueOf(commandList.get(0).trim());
+        int y = Integer.valueOf(commandList.get(1).trim());
         String cDirection = commandList.get(2);
 
         CardinalPoint cardinalPoint = CardinalPoint.cardinalPointForDirection(cDirection);
