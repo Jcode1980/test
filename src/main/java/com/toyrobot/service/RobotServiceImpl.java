@@ -8,7 +8,7 @@ import com.toyrobot.model.Robot;
 import com.toyrobot.model.Simulation;
 import org.apache.log4j.Logger;
 
-import java.awt.*;
+import java.awt.Point;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,33 +29,29 @@ public class RobotServiceImpl implements RobotService{
         if (simulation == null) { throw new NullPointerException("simulation must not be null"); }
         if (command == null) { throw new NullPointerException("command parameter must not be null"); }
 
-        ActionType actionType = actionTypes.stream().filter(
-                currentActionType -> command.matches(currentActionType.pattern())).findFirst().orElse(null);
+        boolean successfullyProcessed = actionTypes.stream().filter(
+                currentActionType -> command.matches(currentActionType.pattern())).findFirst().map(
+                actionType -> {
+                    switch (actionType) {
+                        case PLACE:
+                            return placeAction(command, simulation);
+                        case LEFT:
+                            return simulation.robot().rotate(RotationDirection.LEFT);
+                        case RIGHT:
+                            return simulation.robot().rotate(RotationDirection.RIGHT);
+                        case MOVE:
+                            return simulation.moveRobot();
+                        case REPORT:
+                            return simulation.report();
+                        default:
+                            return false;
+                    }
 
-        if (actionType == null) {
+                }).orElseGet(()->{
             log.error("unkown command :" + command);
-            return false;
-        }
+                    return false;
+                });
 
-        boolean successfullyProcessed = true;
-
-        switch (actionType) {
-            case PLACE:
-                successfullyProcessed = placeAction(command, simulation);
-                break;
-            case LEFT:
-                successfullyProcessed = simulation.robot().rotate(RotationDirection.LEFT);
-                break;
-            case RIGHT:
-                successfullyProcessed = simulation.robot().rotate(RotationDirection.RIGHT);
-                break;
-            case MOVE:
-                successfullyProcessed = simulation.moveRobot();
-                break;
-            case REPORT:
-                successfullyProcessed = simulation.report();
-                break;
-        }
         return successfullyProcessed;
     }
 

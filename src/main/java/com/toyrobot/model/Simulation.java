@@ -2,7 +2,7 @@ package com.toyrobot.model;
 import com.toyrobot.enums.CardinalPoint;
 import org.apache.log4j.Logger;
 
-import java.awt.*;
+import java.awt.Point;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class Simulation {

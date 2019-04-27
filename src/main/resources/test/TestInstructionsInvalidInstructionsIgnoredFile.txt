@@ -3,8 +3,8 @@ right
 report
 move
 fly
-dodge
 place 0,0,East
+dodge
 left
 move
 right

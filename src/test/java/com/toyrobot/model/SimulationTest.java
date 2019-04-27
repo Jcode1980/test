@@ -9,7 +9,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.awt.*;
+import java.awt.Point;
 import java.io.ByteArrayOutputStream;
 
 import static org.hamcrest.CoreMatchers.containsString;

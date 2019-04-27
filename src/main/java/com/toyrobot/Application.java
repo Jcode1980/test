@@ -1,6 +1,9 @@
 package com.toyrobot;
 import com.toyrobot.service.RobotServiceImpl;
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.File;
 
 public class Application {
     private static final Integer DEFAULT_MAP_HEIGHT = 5;

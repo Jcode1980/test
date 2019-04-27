@@ -6,7 +6,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.awt.*;
+
+import java.awt.Point;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;

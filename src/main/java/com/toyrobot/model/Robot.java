@@ -4,7 +4,7 @@ import com.toyrobot.enums.CardinalPoint;
 import com.toyrobot.enums.RotationDirection;
 import org.apache.log4j.Logger;
 
-import java.awt.*;
+import java.awt.Point;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;

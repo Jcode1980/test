@@ -44,7 +44,7 @@ public class ClientTest {
     @Test
     public void startSimulation() throws IOException {
         Path testInstructionsPath = Paths.get(TEST_INSTRUCTIONS_FILE);
-        Client client = new Client(new RobotServiceImpl(), 4, 4, new FileInputStream(testInstructionsPath.toFile()));
+        Client client = new Client(new RobotServiceImpl(), 5, 5, new FileInputStream(testInstructionsPath.toFile()));
         client.startSimulation();
         assertThat(outContent.toString(), containsString("2,1,EAST"));
         assertThat(outContent.toString(), containsString("2,3,NORTH"));
@@ -65,12 +65,12 @@ public class ClientTest {
     @Test
     public void IT_processCommandFile_moveAroundBoundariesAndEndSimulationNormally() throws IOException {
         Path testBoundariesFilePath = Paths.get(TEST_INSTRUCTIONS_BOUNDARIES_FILE);
-        Client client = new Client(new RobotServiceImpl(),4, 4, new FileInputStream(testBoundariesFilePath.toFile()));
+        Client client = new Client(new RobotServiceImpl(),5, 5, new FileInputStream(testBoundariesFilePath.toFile()));
         client.startSimulation();
 
-        assertThat(outContent.toString(), containsString("3,0,EAST"));
-        assertThat(outContent.toString(), containsString("3,3,NORTH"));
-        assertThat(outContent.toString(), containsString("0,3,WEST"));
+        assertThat(outContent.toString(), containsString("4,0,EAST"));
+        assertThat(outContent.toString(), containsString("4,4,NORTH"));
+        assertThat(outContent.toString(), containsString("0,4,WEST"));
         assertThat(outContent.toString(), containsString("0,0,SOUTH"));
     }
 

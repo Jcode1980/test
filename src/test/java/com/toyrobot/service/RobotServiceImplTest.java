@@ -11,7 +11,9 @@ import java.io.IOException;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertFalse;
 
 public class RobotServiceImplTest {
     private static final String APPENDER_NAME = "log4jRuleAppender";
